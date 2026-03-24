@@ -5,22 +5,24 @@ This module provides the structured output models and prompt templates used
 by the confidence scorer to evaluate hybrid search results and assign
 final confidence scores to each ICD code candidate.
 """
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, AliasChoices
 from typing import Literal
 
 
 class ICDCodeEvaluation(BaseModel):
     """Individual ICD code evaluation with reasoning and confidence score."""
 
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra='ignore', populate_by_name=True)
 
     code: str = Field(description="The ICD code being evaluated (dotted format, e.g. 'A00.0')")
     relevance_score: float = Field(
+        validation_alias=AliasChoices('relevance_score', 'relevance'),
         description="Relevance score from 0.0 to 1.0 where 1.0 is a perfect match",
         ge=0.0,
         le=1.0,
     )
     confidence: Literal["high", "medium", "low"] = Field(
+        default="low",
         description="Confidence level for this match"
     )
     match_reasoning: str = Field(
@@ -133,5 +135,5 @@ CONFIDENCE_SCORING_CONFIG = {
     "model": "moonshotai/kimi-k2-instruct-0905",
     "temperature": 0.0,
     "max_tokens": 5000,
-    "strict": True,
+    "strict": False,
 }
