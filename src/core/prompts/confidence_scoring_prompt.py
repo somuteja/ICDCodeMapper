@@ -119,6 +119,13 @@ def get_confidence_scoring_prompt(
 5. **Order all evaluated codes by relevance score (highest to lowest).**
 6. Identify the single best matching code.
 
+**Required JSON output fields (use these exact field names):**
+- `reasoning`: step-by-step analysis of the query and ICD mapping
+- `query_understanding`: your interpretation of what the user is looking for
+- `evaluated_codes`: list of objects, each with `code`, `relevance_score`, `confidence`, `match_reasoning`
+- `best_code`: the single most relevant ICD code
+- `overall_confidence`: "high", "medium", or "low"
+
 Evaluate all candidate codes and provide your structured analysis."""
 
 
