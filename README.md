@@ -167,9 +167,14 @@ Health check endpoint.
 
 ## Dataset
 
-- Source: [ICD-10 CSV](https://raw.githubusercontent.com/k4m1113/ICD-10-CSV/master/codes.csv)
-- 71,704 diagnosis codes
+| Type | Source | Count |
+|------|--------|-------|
+| Diagnosis | [ICD-10 CSV](https://raw.githubusercontent.com/k4m1113/ICD-10-CSV/master/codes.csv) | 71,704 |
+| Procedure | ICD-10-PCS | 78,115 |
+| **Total** | | **149,819** |
+
 - Stored in Qdrant with dense (BGE-large) and sparse (BM25) vectors
+- Diagnosis and procedure codes are tagged with `query_type` payload for filtered search
 
 ## Models Used
 
