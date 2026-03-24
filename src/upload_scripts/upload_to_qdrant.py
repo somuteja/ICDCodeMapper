@@ -245,16 +245,16 @@ class ICDUploader:
 
 def main():
     """Main function to run the upload process"""
-    csv_file = "icd10_codes_preprocessed.csv"
+    csv_file = "icd_10_pcs_preprocessed.csv"
 
-    
-    OFFSET = 0   
-    LIMIT = 75000  
-    BATCH_SIZE = 10 
+    OFFSET = 0
+    LIMIT = 79115
+    BATCH_SIZE = 10
+    START_ID = 80000  # Diagnosis codes occupy IDs 0-71703; start procedures at 80000
 
     if not os.path.exists(csv_file):
         logger.error(f"File not found: {csv_file}")
-        logger.error("Please run preprocess_icd10.py first to generate the preprocessed data")
+        logger.error("Please run preprocess_icd10_pcs.py first to generate the preprocessed data")
         return 1
 
     try:
@@ -262,7 +262,7 @@ def main():
 
         data = uploader.read_preprocessed_data(csv_file, limit=LIMIT, offset=OFFSET)
 
-        successful_batches, failed_batches = uploader.upload_data(data, batch_size=BATCH_SIZE, start_id=OFFSET)
+        successful_batches, failed_batches = uploader.upload_data(data, batch_size=BATCH_SIZE, start_id=START_ID)
 
         if len(failed_batches) == 0:
             logger.info("✓ All batches uploaded successfully!")
